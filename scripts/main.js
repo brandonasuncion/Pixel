@@ -13,7 +13,7 @@
     var CANVAS_INITIAL_ZOOM = 20;
     var CANVAS_MIN_ZOOM = 10;
     var CANVAS_MAX_ZOOM = 40;
-    var CANVAS_COLORS = ['#eeeeee', 'red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+	var CANVAS_COLORS = ['#eeeeee', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', '#614126', 'white', 'black'];
 
     var stage;                                  // EaselJS stage
     var pixels;                                 // EaselJS container to store all the pixels
