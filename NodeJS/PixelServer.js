@@ -1,9 +1,15 @@
 /*
+
+PixelServer.js hosts the server that saves the painted pixel data
+
+
 SETUP:
-  $ npm install ws
+    $ npm init
+    $ npm install ws
 
 RUNNING:
-  $ node start
+    $ node start
+
 */
 
 var CANVAS_WIDTH = 50;
