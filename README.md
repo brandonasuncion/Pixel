@@ -10,14 +10,17 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 * [jQuery](https://jquery.com/)
 
 ### Setup
-1. Modify /www/scripts/main.js to point to your public address.
-	```var PIXEL_SERVER = 'ws://127.0.0.1:3001';```
+1. Modify /www/scripts/main.js to point to your public address. 
+	```var PIXEL_SERVER = 'ws://127.0.0.1:3001';
+	```
 2. Within the NodeJS folder, install the dependency
-	```npm install```
+	```npm install
+	```
 	
 ### Running
 1. Within the NodeJS folder
-	```npm start```
+	```npm start
+	```
 2. Upload the /www/ folder to your webserver of choice.
 
 ### Usage
