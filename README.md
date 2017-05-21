@@ -14,8 +14,9 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 	```
 	var PIXEL_SERVER = 'ws://127.0.0.1:3001';
 	```
-2. Within the NodeJS folder, install the dependency
-	```npm install
+2. Within the NodeJS folder, install the ws dependency
+	```
+	npm install
 	```
 	
 ### Running
