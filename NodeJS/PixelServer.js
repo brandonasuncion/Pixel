@@ -2,13 +2,11 @@
 
 PixelServer.js hosts the server that saves the painted pixel data
 
-
 SETUP:
-    $ npm init
-    $ npm install ws
+	$ npm install
 
 RUNNING:
-    $ node start
+	$ npm start
 
 */
 
@@ -18,9 +16,7 @@ var CANVAS_HEIGHT = 50;
 var WebSocket = require('ws');
 var WebSocketServer = WebSocket.Server;
 var port = 3001;
-var ws = new WebSocketServer({
-	port: port
-});
+var ws = new WebSocketServer({port: port});
 
 var pixels = new Array(CANVAS_WIDTH);
 for (var i = 0; i < CANVAS_WIDTH; i++)
@@ -48,23 +44,20 @@ ws.on('connection', function(socket) {
 	}));
 
 	socket.on('message', function(data) {
-		//console.log('Raw Data:', data);
 
 		var received;
 		try {
 			received = JSON.parse(data);
 		} catch (e) {}
-
 		var action = (received && received['action']) ? received['action'] : data;
-		//console.log('Action: "' + action + '"');
 
 		switch (action) {
-
+			/*
 			case 'clearCanvas':
 				console.log('CLEARED CANVAS')
 				initPixels();
 				break;
-
+			*/
 			case 'refreshPixels':
 				console.log('REFRESH PIXELS REQUEST FROM CLIENT');
 
@@ -98,6 +91,7 @@ ws.on('connection', function(socket) {
 						}
 
 					});
+					
 				} else {
 					console.log('Invalid paint request');
 				}

@@ -1,16 +1,16 @@
 {
-  "name": "pixel",
-  "version": "1.0.0",
-  "main": "PixelServer.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node PixelServer.js",
-    "dev": "nodemon PixelServer.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ws": "^2.3.1"
-  },
-  "description": ""
+	"name": "pixel",
+	"version": "1.0.0",
+	"main": "PixelServer.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node PixelServer.js",
+		"dev": "nodemon PixelServer.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"ws": "^2.3.1"
+	},
+	"description": ""
 }
