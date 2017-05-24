@@ -1,37 +1,11 @@
-
 #pixelCanvas {
     position: fixed;
     padding:0;
     margin:0;
-
     top: 0;
     left: 0;
-    /*width: 100%;
-    height: 100%;*/
 }
-
 
 body {
 	background-color: #CCCCCC;
-}
-
-/* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
-
-canvas {
-		/*
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    /*image-rendering: -webkit-optimize-contrast;*/
-		/*
-    image-rendering: -o-crisp-edges;
-    image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor;
-		*/
-
-		
-		/*
-		image-rendering: crisp-edges;
-		image-rendering: pixelated;
-		-ms-interpolation-mode: nearest-neighbor;
-		*/
 }

@@ -2,6 +2,8 @@
 
 Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data.
 
+However, unlike Reddit Place, Pixel does not have a time limit for each user. Everything is anonymous.
+
 ## Getting Started
 
 ### Dependencies
@@ -14,15 +16,15 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 	```
 	var PIXEL_SERVER = 'ws://127.0.0.1:3001';
 	```
-2. Within the NodeJS folder, install the ws dependency
+2. Within the NodeJS folder, install the node modules.
 	```
-	npm install
+	$ npm install
 	```
 	
 ### Running
-1. Within the NodeJS folder
+1. Within the NodeJS folder, run the WebSocket server.
 	```
-	npm start
+	$ npm start
 	```
 2. Upload the /www/ folder to your webserver of choice.
 
