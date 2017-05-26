@@ -33,7 +33,7 @@ However, unlike Reddit Place, Pixel does not have a time limit for each user. Ev
 2. Click on a pixel.
 
 ## Credits
-Brandon Asuncion - brandon@suncion.tech
+Brandon Asuncion - me@brandonasuncion.tech
 
 ## Acknowlegements
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)
