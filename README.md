@@ -37,3 +37,6 @@ Brandon Asuncion - me@brandonasuncion.tech
 
 ## Acknowlegements
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)
+
+## License
+* [MIT License](https://choosealicense.com/licenses/mit/)
