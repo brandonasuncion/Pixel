@@ -39,4 +39,4 @@ Brandon Asuncion - me@brandonasuncion.tech
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)
 
 ## License
-* [MIT License](https://choosealicense.com/licenses/mit/)
+* [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
