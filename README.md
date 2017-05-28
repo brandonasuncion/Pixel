@@ -4,8 +4,7 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 
 However, unlike Reddit Place, Pixel does not have a time limit for each user. Everything is anonymous.
 
-[Live Demo](https://brandonasuncion.github.io/Pixel/www/)
-Please note, the live demo does not have real-time collaboration enabled.
+A [live demo](https://brandonasuncion.github.io/Pixel/www/) is available. Please note, the live demo does not have real-time collaboration enabled.
 
 ## Getting Started
 
