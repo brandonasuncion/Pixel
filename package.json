@@ -1,10 +1,10 @@
 {
 	"name": "pixel",
 	"version": "1.0.0",
-	"main": "PixelServer.js",
+	"main": "./NodeJS/PixelServer.js",
 	"scripts": {
-		"test": "./node_modules/jshint/bin/jshint PixelServer.js",
-		"start": "node PixelServer.js"
+		"test": "./NodeJS/node_modules/jshint/bin/jshint PixelServer.js",
+		"start": "node ./NodeJS/PixelServer.js"
 	},
 	"author": "me@brandonasuncion.tech",
 	"license": "ISC",
