@@ -1,5 +1,6 @@
 # Pixel
 
+[![Build Status](https://travis-ci.org/brandonasuncion/Pixel.svg?branch=master)](https://travis-ci.org/brandonasuncion/Pixel)
 Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data.
 
 However, unlike Reddit Place, Pixel does not have a time limit for each user. Everything is anonymous.
@@ -41,4 +42,4 @@ Brandon Asuncion - me@brandonasuncion.tech
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)
 
 ## License
-* [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
+[Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
