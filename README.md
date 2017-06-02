@@ -18,13 +18,13 @@ A [live demo](https://brandonasuncion.github.io/Pixel/www/) is available. Please
 	```
 	var PIXEL_SERVER = 'ws://127.0.0.1:3001';
 	```
-2. Within the NodeJS folder, install the node modules.
+2. Install the node module.
 	```
 	$ npm install
 	```
 	
 ### Running
-1. Within the NodeJS folder, run the WebSocket server.
+1. Run the WebSocket server.
 	```
 	$ npm start
 	```

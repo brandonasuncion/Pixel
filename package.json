@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "./NodeJS/PixelServer.js",
 	"scripts": {
-		"test": "./NodeJS/node_modules/jshint/bin/jshint PixelServer.js",
+		"test": "./node_modules/jshint/bin/jshint ./NodeJS/PixelServer.js",
 		"start": "node ./NodeJS/PixelServer.js"
 	},
 	"author": "me@brandonasuncion.tech",
