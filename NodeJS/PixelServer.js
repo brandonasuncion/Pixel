@@ -16,7 +16,9 @@ var CANVAS_HEIGHT = 50;
 var WebSocket = require('ws');
 var WebSocketServer = WebSocket.Server;
 var port = 3001;
-var ws = new WebSocketServer({port: port});
+var ws = new WebSocketServer({
+	port: port
+});
 
 var pixels = new Array(CANVAS_WIDTH);
 for (var i = 0; i < CANVAS_WIDTH; i++)
@@ -26,7 +28,11 @@ for (var i = 0; i < CANVAS_WIDTH; i++)
 function initPixels() {
 	for (var x = 0; x < CANVAS_WIDTH; x++) {
 		for (var y = 0; y < CANVAS_HEIGHT; y++) {
-			pixels[x][y] = {x, y, 'color': 0};
+			pixels[x][y] = {
+				x,
+				y,
+				'color': 0
+			};
 		}
 	}
 }
@@ -49,7 +55,7 @@ ws.on('connection', function(socket) {
 		try {
 			received = JSON.parse(data);
 		} catch (e) {}
-		var action = (received && received['action']) ? received['action'] : data;
+		var action = (received && received.action) ? received.action : data;
 
 		switch (action) {
 			/*
@@ -64,22 +70,22 @@ ws.on('connection', function(socket) {
 				var pixelArray = new Uint8Array(CANVAS_WIDTH * CANVAS_WIDTH);
 				for (var x = 0; x < CANVAS_WIDTH; x++) {
 					for (var y = 0; y < CANVAS_HEIGHT; y++) {
-						pixelArray[x + y * CANVAS_HEIGHT] = pixels[x][y]['color'];
+						pixelArray[x + y * CANVAS_HEIGHT] = pixels[x][y].color;
 					}
 				}
 				socket.send(pixelArray);
 				break;
 
 			case 'paint':
-				var x = received['x'];
-				var y = received['y'];
-				var color = received['color'];
+				var x = received.x;
+				var y = received.y;
+				var color = received.color;
 				console.log('PAINT', x, y, color);
 
 				if (x >= 0 && y >= 0 && x < CANVAS_WIDTH && y < CANVAS_HEIGHT) {
 
-					pixels[x][y]['color'] = color;
-					pixels[x][y]['date'] = Date.now();
+					pixels[x][y].color = color;
+					pixels[x][y].date = Date.now();
 
 					var sendData = JSON.stringify({
 						'action': 'updatePixel',
@@ -91,15 +97,15 @@ ws.on('connection', function(socket) {
 						}
 
 					});
-					
+
 				} else {
 					console.log('Invalid paint request');
 				}
 				break;
 
 			case 'getPixel':
-				var x = received['x'];
-				var y = received['y'];
+				let x = received.x;
+				let y = received.y;
 				console.log('GETPIXEL', x, y);
 
 				socket.send(JSON.stringify({
