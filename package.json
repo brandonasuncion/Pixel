@@ -1,16 +1,22 @@
 {
 	"name": "pixel",
 	"version": "1.0.0",
-	"main": "./NodeJS/PixelServer.js",
-	"scripts": {
-		"test": "./node_modules/jshint/bin/jshint ./NodeJS/PixelServer.js",
-		"start": "node ./NodeJS/PixelServer.js"
+	"author": "Brandon Asuncion <me@brandonasuncion.tech> (https://brandonasuncion.tech)",
+	"license": "SEE LICENSE IN LICENSE",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/brandonasuncion/Pixel.git"
 	},
-	"author": "me@brandonasuncion.tech",
-	"license": "ISC",
+	"main": "src/PixelServer.js",
+	"scripts": {
+		"test": "node_modules/jshint/bin/jshint ./src/PixelServer.js",
+		"start": "node src/PixelServer.js"
+	},
 	"dependencies": {
-		"ws": "^2.3.1",
-		"jshint": "^2.9.4"
+		"ws": "^2.3.1"
+	},
+	"devDependencies": {
+		"jshint":"^2.9.5"
 	},
 	"description": ""
 }
