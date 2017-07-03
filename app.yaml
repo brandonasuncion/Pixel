@@ -3,5 +3,4 @@ env: flex
 network:
   forwarded_ports:
   - 3001/tcp
-manual_scaling:
-  instances: 1
+  instance_tag: websocket
