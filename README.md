@@ -43,7 +43,7 @@ A [live demo](https://brandonasuncion.github.io/Pixel/www/) is available. Please
 	$ npm install
 	```
 3. Create a firewall rule within the Cloud Platform Console to open port 3001 for TCP traffic.
-4. Upload `src/public/ ` to a webserver, or see [here](https://cloud.google.com/appengine/docs/flexible/nodejs/serving-static-files) for other methods to serve static files.
+4. Upload `src/public/ ` to a webserver, or see [here](https://cloud.google.com/storage/docs/hosting-static-website) for serving the static files.
 4. Deploy the application within Google App Engine.
 	```
 	$ gcloud app deploy
