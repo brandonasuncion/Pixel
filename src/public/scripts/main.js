@@ -3,6 +3,7 @@
     var App = window.App || {};
     var $ = window.jQuery;
     var createjs = window.createjs;
+    var toastr = window.toastr;
 
     var PIXEL_SERVER = "ws://127.0.0.1:3001";
 
@@ -116,7 +117,7 @@
         toastr["error"]("No Connection to Server", null, {"onclick": null, "timeOut": "0", "extendedTimeOut": "0"});
     });
 
-    console.log("Connecting to ", PIXEL_SERVER)
+    console.log("Connecting to ", PIXEL_SERVER);
     pixelSocket.connect();
     /* END PixelSocket CODE */
 
@@ -181,7 +182,7 @@
         pixels.y = (window.innerHeight - (CANVAS_INITIAL_ZOOM * CANVAS_HEIGHT)) / 2;
 
         stage.update();
-        console.log("Canvas Initialization done.")
+        console.log("Canvas Initialization done.");
 
 
         /* User selects color with number keys */

@@ -60,7 +60,7 @@
 	// asks the server to resend all the pixel data
 	PixelSocket.prototype.requestRefresh = function() {
 		this.socket.send("refreshPixels");
-	}
+	};
 
 	// set handler for canvas refreshes
 	PixelSocket.prototype.setCanvasRefreshHandler = function(callback) {
