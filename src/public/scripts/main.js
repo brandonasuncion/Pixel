@@ -1,18 +1,18 @@
 (function(window) {
-    'use strict';
+    "use strict";
     var App = window.App || {};
     var $ = window.jQuery;
     var createjs = window.createjs;
 
-    var PIXEL_SERVER = 'ws://127.0.0.1:3001';
+    var PIXEL_SERVER = "ws://127.0.0.1:3001";
 
-    var CANVAS_ELEMENT_ID = 'pixelCanvas';
+    var CANVAS_ELEMENT_ID = "pixelCanvas";
     var CANVAS_WIDTH = 50;
     var CANVAS_HEIGHT = 50;
     var CANVAS_INITIAL_ZOOM = 20;
     var CANVAS_MIN_ZOOM = 10;
     var CANVAS_MAX_ZOOM = 40;
-    var CANVAS_COLORS = ['#eeeeee', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', '#614126', 'white', 'black'];
+    var CANVAS_COLORS = ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"];
 
     var stage;                                          // EaselJS stage
     var pixels;                                         // EaselJS container to store all the pixels
@@ -54,15 +54,15 @@
 
     pixelSocket.setCanvasRefreshHandler(function(pixelData) {
         if (!pixels) return;
-        console.log('Received pixel data from server');
+        console.log("Received pixel data from server");
         for (var x = 0; x < CANVAS_WIDTH; x++) {
             for (var y = 0; y < CANVAS_HEIGHT; y++) {
                 var colorID = pixelData[x + y * CANVAS_HEIGHT];
                 var color = CANVAS_COLORS[colorID];
 
-                if (colorID != pixelMap[x][y]['color']) {
-                    pixelMap[x][y]['shape'].graphics.beginFill(color).drawRect(x, y, 1, 1);
-                    pixelMap[x][y]['color'] = colorID;
+                if (colorID !== pixelMap[x][y]["color"]) {
+                    pixelMap[x][y]["shape"].graphics.beginFill(color).drawRect(x, y, 1, 1);
+                    pixelMap[x][y]["color"] = colorID;
                 }
             }
         }
@@ -74,36 +74,36 @@
         var action, received;
             try {
                 received = JSON.parse(data);
-            action = received['action'];
+            action = received["action"];
             } catch(e) {
-            console.log('Received unknown command from server', data);
+            console.log("Received unknown command from server", data);
             return;
             }
 
         switch (action) {
-            case 'canvasInfo':      // in case we want to control the canvas dimensions from the server
-                CANVAS_WIDTH = received['width'];
-                CANVAS_HEIGHT = received['height'];
+            case "canvasInfo":      // in case we want to control the canvas dimensions from the server
+                CANVAS_WIDTH = received["width"];
+                CANVAS_HEIGHT = received["height"];
                 break;
 
-            case 'updatePixel':
+            case "updatePixel":
                 if (!pixels) return;
 
-                var x = received['data']['x'];
-                var y = received['data']['y'];
-                var colorID = received['data']['color'];
-                console.log('Pixel Update', x, y, 'color', colorID);
+                var x = received["data"]["x"];
+                var y = received["data"]["y"];
+                var colorID = received["data"]["color"];
+                console.log("Pixel Update", x, y, "color", colorID);
 
-                pixelMap[x][y]['shape'].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
-                received['data']['shape'] = pixelMap[x][y]['shape'];
-                pixelMap[x][y] = received['data'];
+                pixelMap[x][y]["shape"].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
+                received["data"]["shape"] = pixelMap[x][y]["shape"];
+                pixelMap[x][y] = received["data"];
 
                 stage.update();
                 break;
 
-            case 'timer':
-                console.log('Timer: ', received['data']);
-                toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": received['data']});
+            case "timer":
+                console.log("Timer: ", received["data"]);
+                toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": received["data"]});
                 break;
 
             default:
@@ -116,7 +116,7 @@
         toastr["error"]("No Connection to Server", null, {"onclick": null, "timeOut": "0", "extendedTimeOut": "0"});
     });
 
-    console.log('Connecting to ', PIXEL_SERVER)
+    console.log("Connecting to ", PIXEL_SERVER)
     pixelSocket.connect();
     /* END PixelSocket CODE */
 
@@ -124,7 +124,7 @@
     /* Enable pixel selector */
     function startDrawing(colorID = 0) {
         var color = CANVAS_COLORS[colorID];
-        console.log('Selected Color', color);
+        console.log("Selected Color", color);
         var p = pixels.globalToLocal(stage.mouseX, stage.mouseY);
         selectedColorID = colorID;
         drawingShape.graphics.clear().beginFill(CANVAS_COLORS[selectedColorID]).drawRect(0, 0, 1, 1);
@@ -132,7 +132,7 @@
         drawingShape.y = Math.floor(p.y);
         drawingShape.visible = true;
         isDrawing = true;
-        $(screen.canvas).trigger('mousemove');
+        $(screen.canvas).trigger("mousemove");
         stage.update();
     }
 
@@ -140,7 +140,7 @@
     function endDrawing(x, y) {
         if (x >= 0 && y >= 0 && x < CANVAS_WIDTH && y < CANVAS_HEIGHT) {
             console.log("Drawing to pixel", x, y, CANVAS_COLORS[selectedColorID]);
-            pixelMap[x][y]['shape'].graphics.beginFill(CANVAS_COLORS[selectedColorID]).drawRect(x, y, 1, 1);
+            pixelMap[x][y]["shape"].graphics.beginFill(CANVAS_COLORS[selectedColorID]).drawRect(x, y, 1, 1);
 
             // SEND PIXEL UPDATE TO SERVER!
             pixelSocket.sendPixel(x, y, selectedColorID);
@@ -152,7 +152,7 @@
 
     $(document).ready(function() {
 
-        console.log('Initializing EaselJS Stage');
+        console.log("Initializing EaselJS Stage");
         stage = new createjs.Stage(CANVAS_ELEMENT_ID);
 
         var context = stage.canvas.getContext("2d");
@@ -167,21 +167,21 @@
         for (var x = 0; x < CANVAS_WIDTH; x++) {
             for (var y = 0; y < CANVAS_HEIGHT; y++) {
                 var shape = new createjs.Shape();
-                shape.graphics.beginFill('#eeeeee').drawRect(x, y, 1, 1);
+                shape.graphics.beginFill("#eeeeee").drawRect(x, y, 1, 1);
                 pixels.addChild(shape);
-                pixelMap[x][y] = {'color': 0, 'shape': shape};
+                pixelMap[x][y] = {"color": 0, "shape": shape};
             }
         }
 
         pixels.addChild(drawingShape);
         stage.addChild(pixels);
 
-        $(window).trigger('resize');
+        $(window).trigger("resize");
         pixels.x = (window.innerWidth - (CANVAS_INITIAL_ZOOM * CANVAS_WIDTH)) / 2;
         pixels.y = (window.innerHeight - (CANVAS_INITIAL_ZOOM * CANVAS_HEIGHT)) / 2;
 
         stage.update();
-        console.log('Canvas Initialization done.')
+        console.log("Canvas Initialization done.")
 
 
         /* User selects color with number keys */
@@ -232,7 +232,7 @@
     });
 
     // zoom functionality
-    $(window).on('mousewheel', function(e){
+    $(window).on("mousewheel", function(e){
         e.preventDefault();
         zoom = (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) ? zoom + 1 : zoom - 1;
         zoom = Math.min(Math.max(zoom, CANVAS_MIN_ZOOM), CANVAS_MAX_ZOOM);
@@ -252,7 +252,7 @@
     });
 
 
-    $(window).on('resize', function(e){
+    $(window).on("resize", function(e){
         // canvas MUST always be a square, otherwise it will get distorted
         stage.canvas.width = stage.canvas.height = Math.max(window.innerHeight, window.innerWidth);
         stage.update();
