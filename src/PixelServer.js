@@ -14,7 +14,7 @@ RUNNING:
 var PORT = 3001;                // Port to listen on
 var CANVAS_WIDTH = 50;          // Dimensions of the canvas
 var CANVAS_HEIGHT = 50;
-var PAINT_LIMIT = 60;           // Minimum wait time between each draw request, per IP address
+var PAINT_LIMIT = 60;           // Minimum wait time between each draw request, per IP address (in seconds)
 
 
 //  !!!!! DONT EDIT ANYTHING AFTER THIS !!!!!
@@ -96,7 +96,7 @@ ws.on('connection', function(socket) {
                     if (message_timestamp - timestamps[remoteIP] < PAINT_LIMIT * 1000) {
                         socket.send(JSON.stringify({
                             'action': 'timer',
-                            'data': PAINT_LIMIT - (message_timestamp - timestamps[remoteIP])
+                            'data': PAINT_LIMIT * 1000 - (message_timestamp - timestamps[remoteIP])
                         }));
                         socket.send(JSON.stringify({
                             'action': 'updatePixel',
