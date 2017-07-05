@@ -1,5 +1,6 @@
 # Pixel
 [![Build Status](https://travis-ci.org/brandonasuncion/Pixel.svg?branch=master)](https://travis-ci.org/brandonasuncion/Pixel)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df68113b2b3249708caff6601de9a665)](https://www.codacy.com/app/brandonasuncion/Pixel?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=brandonasuncion/Pixel&amp;utm_campaign=Badge_Grade)
 [![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)]()
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
