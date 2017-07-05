@@ -1,11 +1,13 @@
 # Pixel
 [![Build Status](https://travis-ci.org/brandonasuncion/Pixel.svg?branch=master)](https://travis-ci.org/brandonasuncion/Pixel)
+[![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)]()
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
 Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data.
 
-However, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
+Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
-A [live demo](http://pixel.brandonasuncion.tech/) is available!
+Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is available!
 
 ### Dependencies
 * [Node.js](https://nodejs.org/en/)
@@ -30,14 +32,14 @@ A [live demo](http://pixel.brandonasuncion.tech/) is available!
 	```
 	$ npm start
 	```
-2. Upload the /www/ folder to your webserver of choice.
+2. Upload the `src/public/` folder to your webserver of choice.
 
 ## Usage
 1. Press a number between 1-9 to select a color, or 0 to erase.
 2. Click on a pixel.
 
 ## Credits
-Brandon Asuncion - me@brandonasuncion.tech
+Brandon Asuncion <me@brandonasuncion.tech>
 
 ## Acknowlegements
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)

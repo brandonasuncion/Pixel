@@ -40,7 +40,7 @@
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "100",
-        "timeOut": "3000",
+        "timeOut": "3500",
         "extendedTimeOut": "100",
         "showEasing": "swing",
         "hideEasing": "linear",
@@ -224,7 +224,10 @@
         });
 
 
-        toastr["info"]("Select a color with the 1-9 keys\r\nPress 0 to erase", "Have fun!");
+        toastr["info"]("Select a color with the 1 - 9 keys\r\nPress 0 to erase", "Have fun!");
+        setTimeout(function() {
+            toastr["info"]("Keep in mind, you have a 1 minute delay between each pixel you draw");
+        }, 4000);
 
     });
 

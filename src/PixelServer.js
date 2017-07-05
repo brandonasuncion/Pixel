@@ -46,7 +46,7 @@ ws.on('connection', function(socket) {
     var remoteIP = socket._socket.remoteAddress;
 
     var log = function(text) {
-        console.log("[" + (new Date).toLocaleString() + "] " + remoteIP + " ->\t" + text);
+        console.log("[" + (new Date()).toLocaleString() + "] " + remoteIP + " ->\t" + text);
     };
 
     //console.log('New Client: ' + remoteIP + '\t(' + ws.clients.size + ' connected)');
