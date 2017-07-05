@@ -29,6 +29,25 @@
 
     var pixelSocket;                                    // for websocket connection
 
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "100",
+        "timeOut": "3000",
+        "extendedTimeOut": "100",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
     /* START PixelSocket CODE */
 
     pixelSocket = new PixelSocket(PIXEL_SERVER);
@@ -73,16 +92,18 @@
                 var x = received['data']['x'];
                 var y = received['data']['y'];
                 var colorID = received['data']['color'];
-                var color = CANVAS_COLORS[colorID];
                 console.log('Pixel Update', x, y, 'color', colorID);
 
-                if (colorID != pixelMap[x][y]['color']) {
-                    pixelMap[x][y]['shape'].graphics.beginFill(color).drawRect(x, y, 1, 1);
-                }
+                pixelMap[x][y]['shape'].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
                 received['data']['shape'] = pixelMap[x][y]['shape'];
                 pixelMap[x][y] = received['data'];
 
                 stage.update();
+                break;
+
+            case 'timer':
+                console.log('Timer: ', received['data']);
+                toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": received['data']});
                 break;
 
             default:
@@ -91,10 +112,13 @@
 
     });
 
+    pixelSocket.setOncloseHandler(function() {
+        toastr["error"]("No Connection to Server", null, {"onclick": null, "timeOut": "0", "extendedTimeOut": "0"});
+    });
+
     console.log('Connecting to ', PIXEL_SERVER)
     pixelSocket.connect();
     /* END PixelSocket CODE */
-
 
 
     /* Enable pixel selector */
@@ -198,6 +222,9 @@
             pixels.y = e.rawY - dragY;
             stage.update();
         });
+
+
+        toastr["info"]("Select a color with the 1-9 keys\r\nPress 0 to erase", "Have fun!");
 
     });
 

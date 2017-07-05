@@ -3,16 +3,17 @@
 
 Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data.
 
-However, unlike Reddit Place, Pixel does not have a time limit for each user. Everything is anonymous.
+However, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
-A [live demo](https://brandonasuncion.github.io/Pixel/www/) is available. Please note, the live demo does not have real-time collaboration enabled.
+A [live demo](http://pixel.brandonasuncion.tech/) is available!
 
 ### Dependencies
 * [Node.js](https://nodejs.org/en/)
 * [EaselJS](http://www.createjs.com/easeljs)
+* [toastr](https://github.com/CodeSeven/toastr)
 * [jQuery](https://jquery.com/)
 
-## General Setup / Deployment
+## General Setup / Running
 
 ### Setup
 1. Modify src/public/scripts/main.js to point to your public address.
@@ -30,24 +31,6 @@ A [live demo](https://brandonasuncion.github.io/Pixel/www/) is available. Please
 	$ npm start
 	```
 2. Upload the /www/ folder to your webserver of choice.
-
-## Deploying on Google App Engine
-
-1. Clone the repository to your App Engine Instance
-	```
-	$ git clone https://github.com/brandonasuncion/Pixel.git
-	```
-2. cd into the Pixel directory and follow the setup above.
-	```
-	$ cd Pixel
-	$ npm install
-	```
-3. Create a firewall rule within the Cloud Platform Console to open port 3001 for TCP traffic.
-4. Upload `src/public/ ` to a webserver, or see [here](https://cloud.google.com/storage/docs/hosting-static-website) for serving the static files.
-4. Deploy the application within Google App Engine.
-	```
-	$ gcloud app deploy
-	```
 
 ## Usage
 1. Press a number between 1-9 to select a color, or 0 to erase.

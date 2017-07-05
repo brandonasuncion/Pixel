@@ -9,3 +9,9 @@
 body {
     background-color: #CCCCCC;
 }
+
+div {
+    font-family: "Segoe UI Web Regular", "Segoe UI", "Helvetica Neue", Helvetica, Arial;
+    font-size: 14px;
+    line-height: 20px;
+}

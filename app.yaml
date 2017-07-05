@@ -1,6 +1,0 @@
-runtime: nodejs
-env: flex
-network:
-  forwarded_ports:
-  - 3001/tcp
-  instance_tag: websocket

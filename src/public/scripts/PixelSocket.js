@@ -30,11 +30,12 @@
 
 		this.socket.onclose = function(event) {
 			console.log('PixelSocket closed');
-		};
+			if (this.oncloseHandler) this.oncloseHandler();
+		}.bind(this);
 
 		this.socket.onerror = function(event) {
 			console.log('PixelSocket websocket error', event.data);
-		};
+		}.bind(this);
 
 		this.socket.onopen = function(event) {
 			console.log('PixelSocket opened');
@@ -65,6 +66,11 @@
 	// set handler for canvas refreshes
 	PixelSocket.prototype.setCanvasRefreshHandler = function(callback) {
 		this.refreshCallback = callback;
+	};
+
+	// set handler for onclose() events
+	PixelSocket.prototype.setOncloseHandler = function(callback) {
+		this.oncloseHandler = callback;
 	};
 
 	window.PixelSocket = PixelSocket;
