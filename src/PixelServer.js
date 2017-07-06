@@ -1,23 +1,30 @@
 /*
+    PixelServer.js hosts the server that saves the painted pixel data
+        and broadcasts it to all clients
 
-PixelServer.js hosts the server that saves the painted pixel datanp
-    Brandon Asuncion (me@brandonasuncion.tech)
+    CREDITS
+        Brandon Asuncion <me@brandonasuncion.tech>
 
-SETUP:
-    $ npm install
+    SETUP:
+        $ npm install
 
-RUNNING:
-    $ npm start
+    RUNNING:
+        $ npm start
 
 */
 
-var PORT = 3001;                // Port to listen on
-var CANVAS_WIDTH = 50;          // Dimensions of the canvas
+/* Port to listen on */
+var PORT = 3001;
+
+/* Dimensions of the canvas */
+var CANVAS_WIDTH = 50;
 var CANVAS_HEIGHT = 50;
-var PAINT_LIMIT = 60;           // Minimum wait time between each draw request, per IP address (in seconds)
+
+/* Minimum wait time between each draw request, per IP address (in seconds) */
+var USER_PAINT_LIMIT = 60;
 
 
-//  !!!!! DONT EDIT ANYTHING AFTER THIS !!!!!
+/*  !!!!! DONT EDIT ANYTHING AFTER THIS !!!!!  */
 
 var WebSocket = require("ws");
 var WebSocketServer = WebSocket.Server;
@@ -32,7 +39,7 @@ for (var i = 0; i < CANVAS_WIDTH; i++)
 function resetPixels() {
     for (var x = 0; x < CANVAS_WIDTH; x++) {
         for (var y = 0; y < CANVAS_HEIGHT; y++) {
-            pixels[x][y] = {x, y, "color": 0};
+            pixels[x][y] = {x, y, colorID: 0};
         }
     }
 }
@@ -46,10 +53,26 @@ ws.on("connection", function(socket) {
     var remoteIP = socket._socket.remoteAddress;
 
     var log = function(text) {
-        console.log("[" + (new Date()).toLocaleString() + "] " + remoteIP + " ->\t" + text);
+        console.log("[" + (new Date()).toLocaleString() + "] [" + remoteIP + "] ->\t" + text);
     };
 
-    //console.log("New Client: " + remoteIP + "\t(" + ws.clients.size + " connected)");
+    function sendPixelUpdate(x, y, receiver=socket){
+        receiver.send(JSON.stringify({
+            "action": "updatePixel",
+            x,
+            y,
+            'colorID': pixels[x][y].colorID
+        }));
+    }
+
+    function sendTimer(type, time) {
+        socket.send(JSON.stringify({
+            "action": "timer",
+            type,
+            time
+        }));
+    }
+
     log("New client connected\t(" + ws.clients.size + " total)");
 
     socket.send(JSON.stringify({
@@ -58,14 +81,14 @@ ws.on("connection", function(socket) {
         "height": CANVAS_HEIGHT
     }));
 
-    socket.on("message", function(data) {
+    socket.on("message", function(rawdata) {
         var message_timestamp = new Date();
 
-        var received;
+        var data;
         try {
-            received = JSON.parse(data);
+            data = JSON.parse(rawdata);
         } catch (e) {}
-        var action = (received && received["action"]) ? received["action"] : data;
+        var action = (data && data.action) ? data.action : rawdata;
 
         switch (action) {
             /*
@@ -75,53 +98,45 @@ ws.on("connection", function(socket) {
                 break;
             */
             case "refreshPixels":
-                console.log("REFRESH PIXELS REQUEST FROM CLIENT");
+                log("Client requested pixel refresh");
 
                 var pixelArray = new Uint8Array(CANVAS_WIDTH * CANVAS_WIDTH);
                 for (var x = 0; x < CANVAS_WIDTH; x++) {
                     for (var y = 0; y < CANVAS_HEIGHT; y++) {
-                        pixelArray[x + y * CANVAS_HEIGHT] = pixels[x][y]["color"];
+                        pixelArray[x + y * CANVAS_HEIGHT] = pixels[x][y]["colorID"];
                     }
                 }
                 socket.send(pixelArray);
                 break;
 
             case "paint":
-                var x = received["x"];
-                var y = received["y"];
-                var color = received["color"];
 
-
+                // Check rate limits
                 if (remoteIP in timestamps) {
-                    if (message_timestamp - timestamps[remoteIP] < PAINT_LIMIT * 1000) {
-                        socket.send(JSON.stringify({
-                            "action": "timer",
-                            "data": PAINT_LIMIT * 1000 - (message_timestamp - timestamps[remoteIP])
-                        }));
-                        socket.send(JSON.stringify({
-                            "action": "updatePixel",
-                            "data": pixels[x][y]
-                        }));
+                    if (message_timestamp - timestamps[remoteIP] < USER_PAINT_LIMIT * 1000) {
+                        sendTimer('toofast', USER_PAINT_LIMIT * 1000 - (message_timestamp - timestamps[remoteIP]));
+                        sendPixelUpdate(data.x, data.y);
                         break;
                     }
                 }
 
-                if (x >= 0 && y >= 0 && x < CANVAS_WIDTH && y < CANVAS_HEIGHT) {
+                if (data.x >= 0 && data.y >= 0 && data.x < CANVAS_WIDTH && data.y < CANVAS_HEIGHT) {
 
-                    log("PAINT (" + x + ", " + y + ") " + color);
-
-                    pixels[x][y]["color"] = color;
+                    log("PAINT (" + data.x + ", " + data.y + ") " + data.colorID);
+                    pixels[data.x][data.y]["colorID"] = data.colorID;
                     timestamps[remoteIP] = message_timestamp;
+                    sendTimer("paintsuccess", USER_PAINT_LIMIT * 1000);
 
-                    var sendData = JSON.stringify({
+                    var broadcastPacket = JSON.stringify({
                         "action": "updatePixel",
-                        "data": pixels[x][y]
+                        'x': data.x,
+                        'y': data.y,
+                        'colorID': pixels[data.x][data.y].colorID
                     });
                     ws.clients.forEach(function(client) {
                         if ((client !== socket) && (client.readyState === WebSocket.OPEN)) {
-                            client.send(sendData);
+                            client.send(broadcastPacket);
                         }
-
                     });
 
                 } else {
@@ -130,14 +145,8 @@ ws.on("connection", function(socket) {
                 break;
 
             case "getPixel":
-                var x = received["x"];
-                var y = received["y"];
-                console.log("GETPIXEL (" + x + ", " + y + ")");
-
-                socket.send(JSON.stringify({
-                    "action": "updatePixel",
-                    "data": pixels[x][y]
-                }));
+                log("GETPIXEL (" + data.x + ", " + data.y + ")");
+                sendPixelUpdate(data.x, data.y);
                 break;
 
             default:
@@ -148,8 +157,8 @@ ws.on("connection", function(socket) {
 
 
     socket.on("error", function(exception) {
-        console.log("Error encountered");
-        console.log(exception);
+        log("Error encountered");
+        log(exception);
     });
 
     socket.on("close", function() {

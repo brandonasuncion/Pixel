@@ -1,70 +1,43 @@
 (function(window) {
     "use strict";
-    var App = window.App || {};
     var $ = window.jQuery;
     var createjs = window.createjs;
     var toastr = window.toastr;
 
-    var PIXEL_SERVER = "ws://127.0.0.1:3001";
-
-    var CANVAS_ELEMENT_ID = "pixelCanvas";
-    var CANVAS_WIDTH = 50;
-    var CANVAS_HEIGHT = 50;
-    var CANVAS_INITIAL_ZOOM = 20;
-    var CANVAS_MIN_ZOOM = 10;
-    var CANVAS_MAX_ZOOM = 40;
-    var CANVAS_COLORS = ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"];
+    var Pixel = window.Pixel || {};
+    var CANVAS_WIDTH = Pixel.CANVAS_WIDTH;
+    var CANVAS_HEIGHT = Pixel.CANVAS_WIDTH;
+    var CANVAS_COLORS = Pixel.CANVAS_COLORS;
 
     var stage;                                          // EaselJS stage
     var pixels;                                         // EaselJS container to store all the pixels
-
-    var zoom = CANVAS_INITIAL_ZOOM;                     // zoom level
-
-    var pixelMap = new Array(CANVAS_WIDTH);             // map of pixels
-    for (var i = 0; i < CANVAS_WIDTH; i++)
-        pixelMap[i] = Array(CANVAS_HEIGHT);
-
+    var zoom = Pixel.CANVAS_INITIAL_ZOOM;               // zoom level
     var isDrawing = false;                              // whether a new pixel to draw is being selected
     var drawingShape = new createjs.Shape();            // shape to render pixel selector
     var selectedColorID = 0;                            // ID of color to draw
 
-    var pixelSocket;                                    // for websocket connection
+    var pixelMap = new Array(CANVAS_WIDTH);             // 2D array mapping of pixels
+    for (var i = 0; i < CANVAS_WIDTH; i++)
+        pixelMap[i] = Array(CANVAS_HEIGHT);
 
-
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-bottom-center",
-        "preventDuplicates": true,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "100",
-        "timeOut": "3500",
-        "extendedTimeOut": "100",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
+    var pixelRefreshData;
 
     /* START PixelSocket CODE */
 
-    pixelSocket = new PixelSocket(PIXEL_SERVER);
+    var pixelSocket = new PixelSocket(Pixel.PIXEL_SERVER);
 
     pixelSocket.setCanvasRefreshHandler(function(pixelData) {
-        if (!pixels) return;
         console.log("Received pixel data from server");
+        if (!pixels) {
+            console.log("Canvas not ready, storing temporarily.")
+            pixelRefreshData = pixelData;
+            return;
+        }
         for (var x = 0; x < CANVAS_WIDTH; x++) {
             for (var y = 0; y < CANVAS_HEIGHT; y++) {
                 var colorID = pixelData[x + y * CANVAS_HEIGHT];
-                var color = CANVAS_COLORS[colorID];
-
-                if (colorID !== pixelMap[x][y]["color"]) {
-                    pixelMap[x][y]["shape"].graphics.beginFill(color).drawRect(x, y, 1, 1);
-                    pixelMap[x][y]["color"] = colorID;
-                }
+                pixelMap[x][y]["shape"].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
+                pixelMap[x][y]["color"] = colorID;
             }
         }
         stage.update();
@@ -72,52 +45,35 @@
 
     pixelSocket.setMessageHandler(function(data) {
 
-        var action, received;
-            try {
-                received = JSON.parse(data);
-            action = received["action"];
-            } catch(e) {
-            console.log("Received unknown command from server", data);
-            return;
-            }
-
-        switch (action) {
-            case "canvasInfo":      // in case we want to control the canvas dimensions from the server
-                CANVAS_WIDTH = received["width"];
-                CANVAS_HEIGHT = received["height"];
-                break;
-
+        switch (data.action) {
             case "updatePixel":
+                console.log("Pixel Update", data.x, data.y, "color", data.colorID);
                 if (!pixels) return;
 
-                var x = received["data"]["x"];
-                var y = received["data"]["y"];
-                var colorID = received["data"]["color"];
-                console.log("Pixel Update", x, y, "color", colorID);
-
-                pixelMap[x][y]["shape"].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
-                received["data"]["shape"] = pixelMap[x][y]["shape"];
-                pixelMap[x][y] = received["data"];
-
+                pixelMap[data.x][data.y]["shape"].graphics.beginFill(CANVAS_COLORS[data.colorID]).drawRect(data.x, data.y, 1, 1);
+                data["shape"] = pixelMap[data.x][data.y]["shape"];
+                pixelMap[data.x][data.y] = data;
                 stage.update();
                 break;
 
             case "timer":
-                console.log("Timer: ", received["data"]);
-                toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": received["data"]});
+                console.log("Timer: ", data.time);
+                if (data.type == "toofast")
+                    toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": data.time});
                 break;
 
             default:
+                console.log("Unknown action:", data.action);
                 break;
         }
 
     });
 
-    pixelSocket.setOncloseHandler(function() {
+    pixelSocket.onclose = function() {
         toastr["error"]("No Connection to Server", null, {"onclick": null, "timeOut": "0", "extendedTimeOut": "0"});
-    });
+    };
 
-    console.log("Connecting to ", PIXEL_SERVER);
+    console.log("Connecting to ", pixelSocket.server);
     pixelSocket.connect();
     /* END PixelSocket CODE */
 
@@ -154,7 +110,7 @@
     $(document).ready(function() {
 
         console.log("Initializing EaselJS Stage");
-        stage = new createjs.Stage(CANVAS_ELEMENT_ID);
+        stage = new createjs.Stage(Pixel.CANVAS_ELEMENT_ID);
 
         var context = stage.canvas.getContext("2d");
         context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false;
@@ -168,18 +124,20 @@
         for (var x = 0; x < CANVAS_WIDTH; x++) {
             for (var y = 0; y < CANVAS_HEIGHT; y++) {
                 var shape = new createjs.Shape();
-                shape.graphics.beginFill("#eeeeee").drawRect(x, y, 1, 1);
                 pixels.addChild(shape);
                 pixelMap[x][y] = {"color": 0, "shape": shape};
             }
         }
 
+        if (pixelRefreshData)
+            pixelSocket.refreshCallback(pixelRefreshData);
+
         pixels.addChild(drawingShape);
         stage.addChild(pixels);
 
         $(window).trigger("resize");
-        pixels.x = (window.innerWidth - (CANVAS_INITIAL_ZOOM * CANVAS_WIDTH)) / 2;
-        pixels.y = (window.innerHeight - (CANVAS_INITIAL_ZOOM * CANVAS_HEIGHT)) / 2;
+        pixels.x = (window.innerWidth - (zoom * CANVAS_WIDTH)) / 2;
+        pixels.y = (window.innerHeight - (zoom * CANVAS_HEIGHT)) / 2;
 
         stage.update();
         console.log("Canvas Initialization done.");
@@ -225,10 +183,14 @@
         });
 
 
-        toastr["info"]("Select a color with the 1 - 9 keys\r\nPress 0 to erase", "Have fun!");
-        setTimeout(function() {
-            toastr["info"]("Keep in mind, you have a 1 minute delay between each pixel you draw");
-        }, 4000);
+        if (window.Pixel === undefined) {
+            toastr["error"]("Cannot load Pixel configuration. Check if pixel-config.js exists.", null, {"onclick": null, "timeOut": "0", "extendedTimeOut": "0"});
+            return
+        }
+
+        if (Pixel.onload) {
+            Pixel.onload();
+        }
 
     });
 
@@ -236,8 +198,7 @@
     $(window).on("mousewheel", function(e){
         e.preventDefault();
         zoom = (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) ? zoom + 1 : zoom - 1;
-        zoom = Math.min(Math.max(zoom, CANVAS_MIN_ZOOM), CANVAS_MAX_ZOOM);
-        //console.log("Zoom", zoom);
+        zoom = Math.min(Math.max(zoom, Pixel.CANVAS_MIN_ZOOM), Pixel.CANVAS_MAX_ZOOM);
 
         // zoom in/out to cursor position
         var centerX = stage.mouseX;
@@ -259,8 +220,8 @@
         stage.update();
     });
 
-    window.CANVAS_WIDTH = CANVAS_WIDTH;
-    window.CANVAS_HEIGHT = CANVAS_WIDTH;
-    window.startDrawing = startDrawing;
-    window.App = App;
+    Pixel.pixelSocket = pixelSocket;
+    Pixel.startDrawing = startDrawing;
+    Pixel.endDrawing = endDrawing;
+    window.Pixel = Pixel;
 })(window);

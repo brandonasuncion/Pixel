@@ -1,12 +1,16 @@
 /*
-	PixelSocket is a WebSocket wrapper for sending/receiving pixel information
+	PixelSocket is a WebSocket wrapper for sending/receiving pixel information to the Pixel Node.js backend
+
+	CREDITS
+		Brandon Asuncion <me@brandonasuncion.tech>
+
 */
 (function(window) {
 	"use strict";
 
 	function PixelSocket(server, autoconnect = false) {
 		this.server = server;
-
+		this.expectedRefreshSize = 2500;
 		if (autoconnect) this.connect();
 	}
 
@@ -16,60 +20,70 @@
 
 		this.socket.onmessage = function(event) {
 
-			if (event.data.byteLength === CANVAS_WIDTH * CANVAS_HEIGHT) {
+			if (event.data.byteLength == this.expectedRefreshSize) {
 
 				if (this.refreshCallback)
-				  this.refreshCallback(new Uint8Array(event.data));
+					this.refreshCallback(new Uint8Array(event.data));
+				else
+					console.log("No refresh callback specified.")
 
 			} else if (this.messageHandler) {
-				this.messageHandler(event.data);
+				var received;
+				try {
+					received = JSON.parse(event.data);
+				} catch(e) {
+					return;
+				}
+				if (!received || !received.action){
+					console.log("Received unformatted or unknown command from server", data);
+					return;
+				}
+
+				if (received.action === 'canvasInfo') {
+					this.expectedRefreshSize = received.width * received.height;
+					return;
+				}
+
+				this.messageHandler(received);
 			}
 
 		}.bind(this);
 
 		this.socket.onclose = function(event) {
 			console.log("PixelSocket closed");
-			if (this.oncloseHandler) this.oncloseHandler();
+			if (this.onclose) this.onclose(event);
 		}.bind(this);
 
 		this.socket.onerror = function(event) {
 			console.log("PixelSocket websocket error", event.data);
+			if (this.onerror) this.onerror(event);
 		}.bind(this);
 
 		this.socket.onopen = function(event) {
 			console.log("PixelSocket opened");
+			if (this.onopen) this.onopen(event);
 			this.requestRefresh();
 		}.bind(this);
 	};
 
-	PixelSocket.prototype.sendPixel = function(x, y, colorID, username = ""){
-		//console.log("SENDING PIXEL", x, y, colorID);
-		this.socket.send(JSON.stringify({"action": "paint", x, y, "color": colorID, username}));
+	PixelSocket.prototype.sendPixel = function(x, y, colorID){
+		this.socket.send(JSON.stringify({"action": "paint", x, y, colorID}));
 	};
 
 	PixelSocket.prototype.getPixel = function(x, y){
-		//console.log("REQUESTING PIXEL", x, y);
 		this.socket.send(JSON.stringify({"action": "getPixel", x, y}));
 	};
 
-	// message handler for responding to server commands
 	PixelSocket.prototype.setMessageHandler = function(callback) {
 		this.messageHandler = callback;
 	};
 
-	// asks the server to resend all the pixel data
-	PixelSocket.prototype.requestRefresh = function() {
-		this.socket.send("refreshPixels");
-	};
-
-	// set handler for canvas refreshes
 	PixelSocket.prototype.setCanvasRefreshHandler = function(callback) {
 		this.refreshCallback = callback;
 	};
 
-	// set handler for onclose() events
-	PixelSocket.prototype.setOncloseHandler = function(callback) {
-		this.oncloseHandler = callback;
+	PixelSocket.prototype.requestRefresh = function() {
+		this.socket.send("refreshPixels");
 	};
 
 	window.PixelSocket = PixelSocket;
