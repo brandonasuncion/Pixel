@@ -3,29 +3,22 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)]()
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
-Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data. It can easily be deployed off services such as Heroku, and it's entirely scriptable!
+Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data. It's open source, and it's entirely scriptable!
 
 Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
 Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is available!
 
-### Dependencies
-* [Node.js](https://nodejs.org/en/)
-* [EaselJS](http://www.createjs.com/easeljs)
-* [toastr](https://github.com/CodeSeven/toastr)
-* [jQuery](https://jquery.com/)
+## Setup / Deployment
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-## General Setup / Running
-
-### Setup
+### General Setup
 1. Modify `src/public/scripts/pixel-config.js` to point to your WebSocket server.
 	```javascript
 	PIXEL_SERVER: "ws://127.0.0.1:3001",
 	```
-	Or, keep it at the default value to connect to automatically determine your public IP/hostname.
-	```javascript
-	PIXEL_SERVER: location.origin.replace(/^http/, 'ws'),
-	```
+	**Note:** If the files in the `src/public` folder are hosted on the same host as the WebSocket server, this step is optional. The site will automatically determine your public IP/hostname.
+
 2. Optionally, you can change the default dimensions of the canvas, zoom settings, and even the colors used.
 	```javascript
 	CANVAS_WIDTH: 50,
@@ -35,21 +28,23 @@ Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is availa
 	CANVAS_MAX_ZOOM: 40,
 	CANVAS_COLORS: ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"]
 	```
-3. Install the node module.
+3. Install the Node.js dependencies.
 	```
 	$ npm install
 	```
 	
-### Running
+### Deployment
 1. Run the WebSocket server.
 	```
 	$ npm start
 	```
 2. Upload the `src/public/` folder to your webserver of choice.
 
-## Usage
-1. Press a number between 1-9 to select a color, or 0 to erase.
-2. Click on a pixel.
+### Dependencies
+* [Node.js](https://nodejs.org/en/)
+* [EaselJS](http://www.createjs.com/easeljs)
+* [toastr](https://github.com/CodeSeven/toastr)
+* [jQuery](https://jquery.com/)
 
 ## PixelSocket Scripting and Automation
 Pixel can be manipulated with the PixelSocket class (included in `PixelSocket.js`).
