@@ -88,7 +88,7 @@ Pixel can be manipulated with the PixelSocket class (included in `PixelSocket.js
 * `PixelSocket.onclose(event)`
 
 ## Credits
-Brandon Asuncion <me@brandonasuncion.tech>
+Brandon Asuncion // <me@brandonasuncion.tech>
 
 ## Acknowlegements
 [Reddit Place](https://redditblog.com/2017/04/13/how-we-built-rplace/)
