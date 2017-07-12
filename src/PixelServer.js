@@ -27,14 +27,14 @@ var USER_PAINT_LIMIT = process.env.USER_PAINT_LIMIT || 60;
 /*  !!!!! DONT EDIT ANYTHING AFTER THIS !!!!!  */
 
 
-var http = require("http")
-var express = require("express")
-var app = express()
+var http = require("http");
+var express = require("express");
+var app = express();
 
-app.use(express.static(__dirname + "/public/"))
+app.use(express.static(__dirname + "/public/"));
 
-var server = http.createServer(app)
-server.listen(PORT)
+var server = http.createServer(app);
+server.listen(PORT);
 
 var WebSocketServer = require("ws").Server;
 
