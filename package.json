@@ -1,22 +1,27 @@
 {
-	"name": "pixel",
-	"version": "1.0.0",
-	"author": "Brandon Asuncion <me@brandonasuncion.tech> (https://brandonasuncion.tech)",
-	"license": "SEE LICENSE IN LICENSE",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/brandonasuncion/Pixel.git"
-	},
-	"main": "src/PixelServer.js",
-	"scripts": {
-		"test": "node_modules/jshint/bin/jshint ./src/PixelServer.js",
-		"start": "node src/PixelServer.js"
-	},
-	"dependencies": {
-		"ws": "^2.3.1"
-	},
-	"devDependencies": {
-		"jshint":"^2.9.5"
-	},
-	"description": ""
+  "name": "pixel",
+  "version": "1.0.0",
+  "author": "Brandon Asuncion <me@brandonasuncion.tech> (https://brandonasuncion.tech)",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brandonasuncion/Pixel.git"
+  },
+  "main": "src/PixelServer.js",
+  "scripts": {
+    "test": "node_modules/jshint/bin/jshint ./src/PixelServer.js",
+	"start": "node src/PixelServer.js",
+	"herokulocal": "heroku local web"
+  },
+  "engines": {
+    "node": "7.4.0"
+  },
+  "dependencies": {
+    "express": "^4.15.3",
+    "ws": "^2.3.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.5"
+  },
+  "description": ""
 }

@@ -14,20 +14,29 @@
 */
 
 /* Port to listen on */
-var PORT = 3001;
+var PORT = process.env.PORT || 3001;
 
 /* Dimensions of the canvas */
-var CANVAS_WIDTH = 50;
-var CANVAS_HEIGHT = 50;
+var CANVAS_WIDTH = process.env.CANVAS_WIDTH || 50;
+var CANVAS_HEIGHT = process.env.CANVAS_HEIGHT || 50;
 
 /* Minimum wait time between each draw request, per IP address (in seconds) */
-var USER_PAINT_LIMIT = 60;
+var USER_PAINT_LIMIT = process.env.USER_PAINT_LIMIT || 60;
 
 
 /*  !!!!! DONT EDIT ANYTHING AFTER THIS !!!!!  */
 
-var WebSocket = require("ws");
-var WebSocketServer = WebSocket.Server;
+
+var http = require("http")
+var express = require("express")
+var app = express()
+
+app.use(express.static(__dirname + "/public/"))
+
+var server = http.createServer(app)
+server.listen(PORT)
+
+var WebSocketServer = require("ws").Server;
 
 var timestamps = {};
 
@@ -45,7 +54,7 @@ function resetPixels() {
 }
 
 console.log("Pixel Websocket Server Initializing");
-var ws = new WebSocketServer({port: PORT});
+var ws = new WebSocketServer({server});
 
 resetPixels();
 
@@ -53,7 +62,8 @@ ws.on("connection", function(socket) {
     var remoteIP = socket._socket.remoteAddress;
 
     var log = function(text) {
-        console.log("[" + (new Date()).toLocaleString() + "] [" + remoteIP + "] ->\t" + text);
+        //console.log("[" + (new Date()).toLocaleString() + "] [" + remoteIP + "] ->\t" + text);
+        console.log("[Client " + remoteIP + "] ->\t" + text);
     };
 
     function sendPixelUpdate(x, y, receiver=socket){
@@ -154,7 +164,6 @@ ws.on("connection", function(socket) {
                 break;
         }
     });
-
 
     socket.on("error", function(exception) {
         log("Error encountered");

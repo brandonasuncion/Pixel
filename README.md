@@ -4,7 +4,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)]()
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
-Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data. Also, it's scriptable!
+Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data. It can easily be deployed off services such as Heroku, and it's entirely scriptable!
 
 Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
@@ -19,9 +19,13 @@ Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is availa
 ## General Setup / Running
 
 ### Setup
-1. Modify `src/public/scripts/pixel-config.js` to point to your public address.
+1. Modify `src/public/scripts/pixel-config.js` to point to your public address/host.
 	```javascript
-	var PIXEL_SERVER = 'ws://127.0.0.1:3001';
+	PIXEL_SERVER: location.origin.replace(/^http/, 'ws'),
+	```
+	Or, keep it at the default to connect to the same location as the hosted files.
+	```javascript
+	PIXEL_SERVER: location.origin.replace(/^http/, 'ws'),
 	```
 2. Optionally, you can change the default dimensions of the canvas, zoom settings, and even the colors used.
 	```javascript

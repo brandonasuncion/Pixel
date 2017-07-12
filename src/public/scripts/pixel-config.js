@@ -8,7 +8,7 @@
 
     // Pixel Settings
     var Pixel = {
-        PIXEL_SERVER: "ws://127.0.0.1:3001",
+        PIXEL_SERVER: location.origin.replace(/^http/, 'ws'),
         CANVAS_WIDTH: 50,
         CANVAS_HEIGHT: 50,
         CANVAS_INITIAL_ZOOM: 20,
