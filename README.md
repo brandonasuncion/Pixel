@@ -7,19 +7,23 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 
 Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
-Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is available!
+Try it out yourself! A [live demo](https://pixel-.herokuapp.com/) is available!
 
 ## Setup / Deployment
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ### General Setup
-1. Modify `src/public/scripts/pixel-config.js` to point to your WebSocket server.
+1. Install the Node.js dependencies.
+	```
+	$ npm install
+	```
+2. If your webserver is running on a different public server than the WebSocket server, modify `src/public/scripts/pixel-config.js` to point to your WebSocket server.  
+	eg.
 	```javascript
 	PIXEL_SERVER: "ws://127.0.0.1:3001",
 	```
-	**Note:** If the files in the `src/public` folder are hosted on the same host as the WebSocket server, this step is optional. The site will automatically determine your public IP/hostname.
 
-2. Optionally, you can change the default dimensions of the canvas, zoom settings, and even the colors used.
+3. **(Optional)** Adjust the dimensions of the canvas, zoom settings, or even the color palette.
 	```javascript
 	CANVAS_WIDTH: 50,
 	CANVAS_HEIGHT: 50,
@@ -28,10 +32,10 @@ Try it out yourself! A [live demo](http://pixel.brandonasuncion.tech/) is availa
 	CANVAS_MAX_ZOOM: 40,
 	CANVAS_COLORS: ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"]
 	```
-3. Install the Node.js dependencies.
-	```
-	$ npm install
-	```
+
+4. **(Optional)** Enable MongoDB support by creating a database with a collection named `pixels`.  
+	When running the script, make sure the `MONGODB_URI` environment variable is set. In Heroku, it's under `Settings -> Config Variables`.  
+	*Note:* If the MongoDB URI is not set, all pixel data will only be kept in memory and will not be saved after a script reload.
 	
 ### Deployment
 1. Run the WebSocket server.
