@@ -76,7 +76,7 @@ if (MONGODB_URI) {
         }
     });
 } else {
-    console.log("No MongoDB connection, all pixels will be stored in RAM")
+    console.log("No MongoDB connection, all pixels will be stored in RAM");
 }
 
 
