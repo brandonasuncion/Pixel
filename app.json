@@ -2,5 +2,11 @@
     "name": "Pixel",
     "description": "A real-time collaborative canvas, inspired by Reddit Place.",
     "repository": "https://github.com/brandonasuncion/Pixel",
-    "logo": "https://avatars2.githubusercontent.com/u/15605364"
+    "logo": "https://avatars2.githubusercontent.com/u/15605364",
+    "addons": [
+        {
+            "plan": "mongolab:sandbox",
+            "as": "MONGO"
+        }
+    ]
 }

@@ -3,7 +3,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)]()
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
-Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses NodeJS as a backend to store pixel data. It's open source, and it's entirely scriptable!
+Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It uses the EaselJS JavaScript library to interact with an HTML5 canvas element, and uses MongoDB to store pixel data. It's open source, and it's entirely scriptable!
 
 Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 

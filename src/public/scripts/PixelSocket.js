@@ -63,6 +63,10 @@
 			console.log("PixelSocket opened");
 			if (this.onopen) this.onopen(event);
 			this.requestRefresh();
+			
+			setInterval(function() {
+				this.socket.send('{"action":"ping"}')
+			}, 15000);
 		}.bind(this);
 	};
 
