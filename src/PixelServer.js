@@ -36,7 +36,8 @@ app.use(express.static(__dirname + "/public/"));
 var server = http.createServer(app);
 server.listen(PORT);
 
-var WebSocketServer = require("ws").Server;
+var WebSocket = require('ws');
+var WebSocketServer = WebSocket.Server;
 
 var timestamps = {};
 
