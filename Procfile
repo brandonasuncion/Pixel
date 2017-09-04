@@ -1,1 +1,1 @@
-node src/PixelServer.js
+web: node src/PixelServer.js

@@ -10,18 +10,19 @@
   "main": "src/PixelServer.js",
   "scripts": {
     "test": "node_modules/jshint/bin/jshint ./src/PixelServer.js",
-	"start": "node src/PixelServer.js",
-	"herokulocal": "heroku local web"
+    "start": "node src/PixelServer.js",
+    "herokulocal": "heroku local web"
   },
   "engines": {
     "node": "7.4.0"
   },
   "dependencies": {
     "express": "^4.15.3",
+    "mongodb": "^2.2.31",
     "ws": "^2.3.1"
   },
   "devDependencies": {
     "jshint": "^2.9.5"
   },
-  "description": ""
+  "description": "A real-time collaborative canvas, inspired by Reddit Place"
 }
