@@ -11,8 +11,8 @@
         PIXEL_SERVER: location.origin.replace(/^http/, 'ws'),
         CANVAS_WIDTH: 50, // The width and height must be the same as the values set for the server
         CANVAS_HEIGHT: 50,
-        CANVAS_INITIAL_ZOOM: 5,
-        CANVAS_MIN_ZOOM: 5,
+        CANVAS_INITIAL_ZOOM: 20,
+        CANVAS_MIN_ZOOM: 10,
         CANVAS_MAX_ZOOM: 40,
         CANVAS_COLORS: ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"],
         CANVAS_ELEMENT_ID: "pixelCanvas",
