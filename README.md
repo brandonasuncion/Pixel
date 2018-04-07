@@ -33,10 +33,14 @@ Try it out yourself! A [live demo](https://pixel-.herokuapp.com/) is available!
 	CANVAS_COLORS: ["#eeeeee", "red", "orange", "yellow", "green", "blue", "purple", "#614126", "white", "black"]
 	```
 
+	NOTE: The canvas size needs to be set in two places (one for the server and one for the browser). For the server set at the top of PixeServer.js, and for
+	the browser set in pixel-config.js.
+
+
 4. **(Optional)** Enable MongoDB support by creating a database with a collection named `pixels`.  
 	When running the script, make sure the `MONGODB_URI` environment variable is set. In Heroku, it's under `Settings -> Config Variables`.  
 	*Note:* If the MongoDB URI is not set, all pixel data will only be kept in memory and will not be saved after a script reload.
-	
+
 ### Deployment
 1. Run the WebSocket server.
 	```
@@ -70,11 +74,11 @@ Pixel can be manipulated with the PixelSocket class (included in `PixelSocket.js
 	* Action:	`canvasInfo`  
 		Server sends updated canvas dimensions  
 		Attributes:		'width', 'height'  
-		
+
 	* Action: `updatePixel`  
 		Server notifies the client a pixel was updated with coordinates  
 		Attributes: 'x', 'y', 'color'  
-		
+
 	* Action: `timer`  
 		Server sends the time when the next pixel can be drawn  
 		Attributes: 'time', 'type'  

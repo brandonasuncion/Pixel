@@ -10,7 +10,7 @@
 
 	function PixelSocket(server, autoconnect = false) {
 		this.server = server;
-		this.expectedRefreshSize = 2500;
+		this.expectedRefreshSize = null;
 		if (autoconnect) this.connect();
 	}
 
@@ -20,7 +20,7 @@
 
 		this.socket.onmessage = function(event) {
 
-			if (event.data.byteLength == this.expectedRefreshSize) {
+			if (event.data.byteLength && event.data.byteLength === this.expectedRefreshSize) {
 
 				if (this.refreshCallback)
 					this.refreshCallback(new Uint8Array(event.data));
@@ -63,7 +63,7 @@
 			console.log("PixelSocket opened");
 			if (this.onopen) this.onopen(event);
 			this.requestRefresh();
-			
+
 			setInterval(function() {
 				this.socket.send('{"action":"ping"}')
 			}, 15000);
