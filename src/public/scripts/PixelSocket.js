@@ -10,7 +10,7 @@
 
 	function PixelSocket(server, autoconnect = false) {
 		this.server = server;
-		this.expectedRefreshSize = undefined;
+		this.expectedRefreshSize = null;
 		if (autoconnect) this.connect();
 	}
 
