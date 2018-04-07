@@ -152,13 +152,13 @@ ws.on("connection", function(socket) {
             case "paint":
 
                 // Check rate limits
-                // if (remoteIP in timestamps) {
-                //     if (message_timestamp - timestamps[remoteIP] < USER_PAINT_LIMIT * 1000) {
-                //         sendTimer('toofast', USER_PAINT_LIMIT * 1000 - (message_timestamp - timestamps[remoteIP]));
-                //         sendPixelUpdate(data.x, data.y);
-                //         break;
-                //     }
-                // }
+                if (remoteIP in timestamps) {
+                    if (message_timestamp - timestamps[remoteIP] < USER_PAINT_LIMIT * 1000) {
+                        sendTimer('toofast', USER_PAINT_LIMIT * 1000 - (message_timestamp - timestamps[remoteIP]));
+                        sendPixelUpdate(data.x, data.y);
+                        break;
+                    }
+                }
 
                 if (data.x >= 0 && data.y >= 0 && data.x < CANVAS_WIDTH && data.y < CANVAS_HEIGHT) {
 
