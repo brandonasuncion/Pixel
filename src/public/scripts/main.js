@@ -6,7 +6,7 @@
 
     var Pixel = window.Pixel || {};
     var CANVAS_WIDTH = Pixel.CANVAS_WIDTH;
-    var CANVAS_HEIGHT = Pixel.CANVAS_WIDTH;
+    var CANVAS_HEIGHT = Pixel.CANVAS_HEIGHT;
     var CANVAS_COLORS = Pixel.CANVAS_COLORS;
 
     var stage;                                          // EaselJS stage
@@ -35,7 +35,7 @@
         }
         for (var x = 0; x < CANVAS_WIDTH; x++) {
             for (var y = 0; y < CANVAS_HEIGHT; y++) {
-                var colorID = pixelData[x + y * CANVAS_HEIGHT];
+                var colorID = pixelData[x + y * CANVAS_WIDTH];
                 pixelMap[x][y]["shape"].graphics.beginFill(CANVAS_COLORS[colorID]).drawRect(x, y, 1, 1);
                 pixelMap[x][y]["color"] = colorID;
             }

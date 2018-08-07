@@ -18,7 +18,8 @@ const PORT = process.env.PORT || 3001;
 
 const MONGODB_URI = process.env.MONGODB_URI || null;
 
-/* Dimensions of the canvas */
+/* Dimensions of the canvas, these values must be the same as the ones
+set in the browser's code. */
 const CANVAS_WIDTH = process.env.CANVAS_WIDTH || 50;
 const CANVAS_HEIGHT = process.env.CANVAS_HEIGHT || 50;
 
@@ -139,10 +140,10 @@ ws.on("connection", function(socket) {
             case "refreshPixels":
                 log("Client requested pixel refresh");
 
-                var pixelArray = new Uint8Array(CANVAS_WIDTH * CANVAS_WIDTH);
+                var pixelArray = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
                 for (var x = 0; x < CANVAS_WIDTH; x++) {
                     for (var y = 0; y < CANVAS_HEIGHT; y++) {
-                        pixelArray[x + y * CANVAS_HEIGHT] = pixels[x][y]["colorID"];
+                        pixelArray[x + y * CANVAS_WIDTH] = pixels[x][y]["colorID"];
                     }
                 }
                 socket.send(pixelArray);
