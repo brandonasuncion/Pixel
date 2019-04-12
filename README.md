@@ -7,7 +7,7 @@ Pixel is a real-time collaborative canvas inspired off of Reddit's Place. It use
 
 Though, unlike Reddit Place, everything is anonymous. However, it can be configured to set a rate limit for each IP address.
 
-Try it out yourself! A [live demo](https://pixel-.herokuapp.com/) is available!
+Try it out yourself! A [live demo](https://pixel--1.herokuapp.com/) is available!
 
 ## Setup / Deployment
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
@@ -96,7 +96,7 @@ Pixel can be manipulated with the PixelSocket class (included in `PixelSocket.js
 * `PixelSocket.onclose(event)`
 
 ## Credits
-[Brandon Asuncion](mailto:me@brandonasuncion.tech)  
+[Brandon Asuncion](mailto:me@brandonasuncion.dev)  
 [hanslivingstone](https://github.com/hanslivingstone) - Added Support for Rectangular Canvases
 
 
