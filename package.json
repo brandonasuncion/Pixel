@@ -14,12 +14,12 @@
     "herokulocal": "heroku local web"
   },
   "engines": {
-    "node": "7.4.0"
+    "node": "10.16.0"
   },
   "dependencies": {
     "express": "^4.15.3",
     "mongodb": "^2.2.31",
-    "ws": "^2.3.1"
+    "ws": ">=3.3.1"
   },
   "devDependencies": {
     "jshint": "^2.9.5"
