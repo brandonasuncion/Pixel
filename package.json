@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "express": "^4.15.3",
-    "mongodb": "^2.2.31",
+    "mongodb": "^3.1.13",
     "ws": ">=3.3.1"
   },
   "devDependencies": {
