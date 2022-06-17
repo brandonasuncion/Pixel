@@ -62,11 +62,11 @@ let ws, mongoclient, pixelCollection;
 resetPixels();
 
 if (MONGODB_URI) {
-    MongoClient.connect(MONGODB_URI, function(err, db) {
+    MongoClient.connect(MONGODB_URI, function (err, db) {
         mongoclient = db;
         pixelCollection = mongoclient.collection('pixels');
         if (pixelCollection) {
-            var dbPixels = pixelCollection.find().toArray(function(err, dbPixels) {
+            var dbPixels = pixelCollection.find().toArray(function (err, dbPixels) {
                 for (var i = 0; i < dbPixels.length; i++)
                     pixels[dbPixels[i].x][dbPixels[i].y].colorID = dbPixels[i].colorID;
 
@@ -84,10 +84,16 @@ if (MONGODB_URI) {
 
 ws = new WebSocketServer({ server });
 
-ws.on("connection", function(socket) {
-    var remoteIP = socket._socket.remoteAddress;
+ws.on("connection", function (socket, req) {
+    // Check whether a reverse proxy exists
+    var remoteIP;
+    if (req.headers['x-real-ip'] != undefined) {
+        remoteIP = req.headers['x-real-ip'];
+    } else {
+        remoteIP = socket._socket.remoteAddress;
+    }
 
-    var log = function(text) {
+    var log = function (text) {
         //console.log("[" + (new Date()).toLocaleString() + "] [" + remoteIP + "] ->\t" + text);
         console.log("[Client " + remoteIP + "] ->\t" + text);
     };
@@ -117,13 +123,13 @@ ws.on("connection", function(socket) {
         "height": CANVAS_HEIGHT
     }));
 
-    socket.on("message", function(rawdata) {
+    socket.on("message", function (rawdata) {
         var message_timestamp = new Date();
 
         var data;
         try {
             data = JSON.parse(rawdata);
-        } catch (e) {}
+        } catch (e) { }
         var action = (data && data.action) ? data.action : rawdata;
 
         switch (action) {
@@ -178,7 +184,7 @@ ws.on("connection", function(socket) {
                         'y': data.y,
                         'colorID': pixels[data.x][data.y].colorID
                     });
-                    ws.clients.forEach(function(client) {
+                    ws.clients.forEach(function (client) {
                         if ((client !== socket) && (client.readyState === WebSocket.OPEN)) {
                             client.send(broadcastPacket);
                         }
@@ -200,12 +206,12 @@ ws.on("connection", function(socket) {
         }
     });
 
-    socket.on("error", function(exception) {
+    socket.on("error", function (exception) {
         log("Error encountered");
         log(exception);
     });
 
-    socket.on("close", function() {
+    socket.on("close", function () {
         log("Client disconnected (" + ws.clients.size + " total)");
     });
 });
