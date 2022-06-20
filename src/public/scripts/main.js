@@ -62,6 +62,10 @@
                     toastr["warning"]("Try again in a little bit", "You're drawing too fast!", {"progressBar": true, "timeOut": data.time});
                 break;
 
+            case "pong":
+                console.log("Received ping response.");
+                break;
+
             default:
                 console.log("Unknown action:", data.action);
                 break;
