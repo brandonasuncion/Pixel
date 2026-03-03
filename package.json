@@ -17,7 +17,7 @@
     "node": "v16.15.1"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.22.1",
     "mongodb": "^3.7.4",
     "ws": ">=7.4.6"
   },
